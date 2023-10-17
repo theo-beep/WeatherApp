@@ -25,7 +25,6 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import com.theolin.weather.data.HomeRepository
 import com.theolin.weather.ui.home.HomeUiState.Error
 import com.theolin.weather.ui.home.HomeUiState.Loading
 import com.theolin.weather.ui.home.HomeUiState.Success
@@ -33,19 +32,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val homeRepository: HomeRepository
 ) : ViewModel() {
 
-    val uiState: StateFlow<HomeUiState> = homeRepository
-        .homes.map<List<String>, HomeUiState>(::Success)
-        .catch { emit(Error(it)) }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), Loading)
 
-    fun addHome(name: String) {
-        viewModelScope.launch {
-            homeRepository.add(name)
-        }
-    }
+
 }
 
 sealed interface HomeUiState {

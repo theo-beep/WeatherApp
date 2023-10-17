@@ -16,34 +16,37 @@
 
 package com.theolin.weather.data.di
 
-import dagger.Binds
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import com.theolin.weather.common.Constants
+import com.theolin.weather.data.network.WeatherApi
+import com.theolin.weather.data.network.WeatherRepository
+import com.theolin.weather.data.network.WeatherRepositoryImpl
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
-import com.theolin.weather.data.HomeRepository
-import com.theolin.weather.data.DefaultHomeRepository
-import javax.inject.Inject
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
+import retrofit2.Retrofit
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface DataModule {
+object DataModule {
 
+    @Provides
     @Singleton
-    @Binds
-    fun bindsHomeRepository(
-        homeRepository: DefaultHomeRepository
-    ): HomeRepository
-}
+    fun provideWeatherApi(): WeatherApi {
+        return Retrofit.Builder()
+            .baseUrl(Constants.BASE_URL)
+            .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+            .build()
+            .create(WeatherApi::class.java)
+    }
 
-class FakeHomeRepository @Inject constructor() : HomeRepository {
-    override val homes: Flow<List<String>> = flowOf(fakeHomes)
-
-    override suspend fun add(name: String) {
-        throw NotImplementedError()
+    @Provides
+    @Singleton
+    fun provideWeatherRepository(api: WeatherApi): WeatherRepository {
+        return WeatherRepositoryImpl(api)
     }
 }
-
-val fakeHomes = listOf("One", "Two", "Three")

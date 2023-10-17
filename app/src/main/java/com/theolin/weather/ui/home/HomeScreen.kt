@@ -39,14 +39,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltViewModel()) {
-    val items by viewModel.uiState.collectAsStateWithLifecycle()
-    if (items is HomeUiState.Success) {
-        HomeScreen(
-            items = (items as HomeUiState.Success).data,
-            onSave = viewModel::addHome,
-            modifier = modifier
-        )
-    }
+
+
 }
 
 @Composable
