@@ -1,23 +1,17 @@
 package com.theolin.weather.domain.models
 
+import java.time.LocalDateTime
+
 data class WeatherForecast(
-    val elevation: Double?,
-    val generationtimeMs: Double?,
-    val hourly: HourlyDomain,
-    val hourlyUnits: HourlyUnitsDomain,
-    val latitude: Double?,
-    val longitude: Double?,
-    val timezone: String?,
-    val timezoneAbbreviation: String?,
-    val utcOffsetSeconds: Int?
+    val weatherDataPerDay: Map<Int, List<WeatherForecastDaily>>,
+    val currentWeatherData: WeatherForecastDaily?
 )
 
-data class HourlyDomain(
-    val temperature2m: List<Double?>?,
-    val time: List<String?>?
-)
-
-data class HourlyUnitsDomain(
-    val temperature2m: String?,
-    val time: String?
+data class WeatherForecastDaily(
+    val time: LocalDateTime,
+    val temperatureCelsius: Double,
+    val pressure: Double,
+    val windSpeed: Double,
+    val humidity: Double,
+    val weatherType: WeatherConditions
 )
