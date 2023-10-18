@@ -1,12 +1,13 @@
 package com.theolin.weather.data.network
 
+import com.theolin.weather.common.DataResource
 import javax.inject.Inject
 
 interface WeatherRepository {
     suspend fun getWeatherForecast(
         latitude: Double,
         longitude: Double
-    ): ForecastResponse
+    ): DataResource<ForecastResponse>
 }
 
 class WeatherRepositoryImpl @Inject constructor(
@@ -15,7 +16,16 @@ class WeatherRepositoryImpl @Inject constructor(
     override suspend fun getWeatherForecast(
         latitude: Double,
         longitude: Double
-    ): ForecastResponse {
-        return api.getWeatherData(lat = latitude, long = longitude)
+    ): DataResource<ForecastResponse> {
+        return try {
+            DataResource.Success(
+                data = api.getWeatherData(lat = latitude, long = longitude)
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            DataResource.Error(
+                message = e.stackTraceToString()
+            )
+        }
     }
 }
