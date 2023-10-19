@@ -38,6 +38,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.theolin.weather.R
+import com.theolin.weather.ui.components.CurrentDayComponent
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -45,52 +47,20 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    state.weather?.currentWeatherData?.weatherType?.let { Text(text = it.description) }
-}
-
-@Composable
-internal fun HomeScreen(
-    items: List<String>,
-    onSave: (name: String) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Column(modifier) {
-        var nameHome by remember { mutableStateOf("Compose") }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 24.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            TextField(
-                value = nameHome,
-                onValueChange = { nameHome = it }
-            )
-
-            Button(modifier = Modifier.width(96.dp), onClick = { onSave(nameHome) }) {
-                Text("Save")
-            }
-        }
-        items.forEach {
-            Text("Saved item: $it")
-        }
+    //TODO add placeholder image
+    //TODO add
+    state.weather?.currentWeatherData.let {
+        CurrentDayComponent(
+            temperature = it?.temperatureCelsius.toString(),
+            description = it?.weatherType?.description.orEmpty(),
+            pressure = it?.pressure.toString(),
+            windSpeed = it?.windSpeed.toString(),
+            humidity = it?.humidity.toString(),
+            iconRes = it?.weatherType?.iconRes ?: androidx.core.R.drawable.ic_call_answer
+        )
     }
-}
 
-// Previews
 
-@Preview(showBackground = true)
-@Composable
-private fun DefaultPreview() {
-    MyApplicationTheme {
-        HomeScreen(listOf("Compose", "Room", "Kotlin"), onSave = {})
-    }
-}
 
-@Preview(showBackground = true, widthDp = 480)
-@Composable
-private fun PortraitPreview() {
-    MyApplicationTheme {
-        HomeScreen(listOf("Compose", "Room", "Kotlin"), onSave = {})
-    }
+
 }
