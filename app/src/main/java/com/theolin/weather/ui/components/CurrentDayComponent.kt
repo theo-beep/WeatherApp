@@ -2,7 +2,6 @@ package com.theolin.weather.ui.components
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,8 +17,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,6 +28,7 @@ import com.theolin.weather.common.Constants.DEGREE_CELSIUS
 import com.theolin.weather.common.Constants.HUMIDITY_UNIT
 import com.theolin.weather.common.Constants.PRESSURE_UNIT
 import com.theolin.weather.common.Constants.WIND_UNIT
+
 @Composable
 fun CurrentDayComponent(
     temperature: String,
@@ -44,7 +44,7 @@ fun CurrentDayComponent(
             .fillMaxWidth()
             .wrapContentHeight(),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f),
         ),
         shape = RoundedCornerShape(10.dp),
 
@@ -63,7 +63,7 @@ fun CurrentDayComponent(
             )
             Text(
                 text = temperature + DEGREE_CELSIUS,
-                color = MaterialTheme.colorScheme.onSurface ,
+                color = Color.White,
                 style = MaterialTheme.typography.displayLarge,
                 modifier = Modifier
                     .padding(16.dp),
@@ -71,7 +71,7 @@ fun CurrentDayComponent(
             )
             Text(
                 text = description,
-                color = MaterialTheme.colorScheme.onSurface ,
+                color = Color.White,
                 style = MaterialTheme.typography.headlineLarge,
                 modifier = Modifier
                     .padding(16.dp),
@@ -103,11 +103,12 @@ fun InfoSection(
         Image(
             modifier = Modifier.size(24.dp),
             painter = painterResource(id = icon),
+            colorFilter = ColorFilter.tint(Color.White),
             contentDescription = null
         )
         Text(
             text = value,
-            color = MaterialTheme.colorScheme.onSurface ,
+            color = Color.White,
             style = MaterialTheme.typography.labelLarge,
             modifier = Modifier
                 .padding(start = 4.dp, bottom = 8.dp, top = 4.dp),
