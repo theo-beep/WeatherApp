@@ -50,7 +50,7 @@ class HomeViewModel @Inject constructor(
                     when (result) {
                         is DataResource.Success -> WeatherState(
                             weather = result.data,
-                            isLoading = true
+                            isLoading = false
                         )
                         is DataResource.Error -> WeatherState(error = result.message)
                         is DataResource.Loading -> WeatherState(isLoading = true)

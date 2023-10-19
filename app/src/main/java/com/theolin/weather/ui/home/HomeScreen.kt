@@ -18,12 +18,19 @@ package com.theolin.weather.ui.home
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.theolin.weather.ui.components.CurrentDayComponent
@@ -35,28 +42,40 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    //TODO add placeholder image
-    Column(
-        modifier = Modifier.verticalScroll(rememberScrollState())
-    ) {
-        state.weather?.currentWeatherData.let {
-            CurrentDayComponent(
-                temperature = it?.temperatureCelsius.toString(),
-                description = it?.weatherType?.description.orEmpty(),
-                pressure = it?.pressure.toString(),
-                windSpeed = it?.windSpeed.toString(),
-                humidity = it?.humidity.toString(),
-                iconRes = it?.weatherType?.iconRes ?: androidx.core.R.drawable.ic_call_answer
-            )
-        }
+    //TODO add placeholder image for icon
+    Box(modifier = Modifier.fillMaxSize()) {
 
-        DailyHourForecast(state = state, index = 0)
-        DailyHourForecast(state = state, index = 1)
-        DailyHourForecast(state = state, index = 2)
-        DailyHourForecast(state = state, index = 3)
-        DailyHourForecast(state = state, index = 4)
-        DailyHourForecast(state = state, index = 5)
-        DailyHourForecast(state = state, index = 6)
-        DailyHourForecast(state = state, index = 7)
+        if (state.isLoading) {
+            CircularProgressIndicator(
+                modifier = Modifier.align(Alignment.Center)
+            )
+        } else if (!state.error.isNullOrBlank()) {
+            //TODO Compose error component
+        } else {
+            Column(
+                modifier = Modifier.verticalScroll(rememberScrollState())
+            ) {
+                state.weather?.currentWeatherData.let {
+                    CurrentDayComponent(
+                        temperature = it?.temperatureCelsius.toString(),
+                        description = it?.weatherType?.description.orEmpty(),
+                        pressure = it?.pressure.toString(),
+                        windSpeed = it?.windSpeed.toString(),
+                        humidity = it?.humidity.toString(),
+                        iconRes = it?.weatherType?.iconRes
+                            ?: androidx.core.R.drawable.ic_call_answer
+                    )
+                }
+
+                DailyHourForecast(state = state, index = 0)
+                DailyHourForecast(state = state, index = 1)
+                DailyHourForecast(state = state, index = 2)
+                DailyHourForecast(state = state, index = 3)
+                DailyHourForecast(state = state, index = 4)
+                DailyHourForecast(state = state, index = 5)
+                DailyHourForecast(state = state, index = 6)
+                DailyHourForecast(state = state, index = 7)
+            }
+        }
     }
 }
