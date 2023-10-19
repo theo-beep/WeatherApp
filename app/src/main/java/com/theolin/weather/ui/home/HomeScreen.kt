@@ -18,28 +18,16 @@ package com.theolin.weather.ui.home
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.theolin.weather.ui.theme.MyApplicationTheme
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.theolin.weather.R
 import com.theolin.weather.ui.components.CurrentDayComponent
+import com.theolin.weather.ui.components.DailyHourForecast
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -48,19 +36,27 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     //TODO add placeholder image
-    //TODO add
-    state.weather?.currentWeatherData.let {
-        CurrentDayComponent(
-            temperature = it?.temperatureCelsius.toString(),
-            description = it?.weatherType?.description.orEmpty(),
-            pressure = it?.pressure.toString(),
-            windSpeed = it?.windSpeed.toString(),
-            humidity = it?.humidity.toString(),
-            iconRes = it?.weatherType?.iconRes ?: androidx.core.R.drawable.ic_call_answer
-        )
+    Column(
+        modifier = Modifier.verticalScroll(rememberScrollState())
+    ) {
+        state.weather?.currentWeatherData.let {
+            CurrentDayComponent(
+                temperature = it?.temperatureCelsius.toString(),
+                description = it?.weatherType?.description.orEmpty(),
+                pressure = it?.pressure.toString(),
+                windSpeed = it?.windSpeed.toString(),
+                humidity = it?.humidity.toString(),
+                iconRes = it?.weatherType?.iconRes ?: androidx.core.R.drawable.ic_call_answer
+            )
+        }
+
+        DailyHourForecast(state = state, index = 0)
+        DailyHourForecast(state = state, index = 1)
+        DailyHourForecast(state = state, index = 2)
+        DailyHourForecast(state = state, index = 3)
+        DailyHourForecast(state = state, index = 4)
+        DailyHourForecast(state = state, index = 5)
+        DailyHourForecast(state = state, index = 6)
+        DailyHourForecast(state = state, index = 7)
     }
-
-
-
-
 }

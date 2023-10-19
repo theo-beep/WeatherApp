@@ -26,8 +26,6 @@ import com.theolin.weather.common.Constants.DEGREE_CELSIUS
 import com.theolin.weather.common.Constants.HUMIDITY_UNIT
 import com.theolin.weather.common.Constants.PRESSURE_UNIT
 import com.theolin.weather.common.Constants.WIND_UNIT
-
-
 @Composable
 fun CurrentDayComponent(
     temperature: String,
@@ -116,12 +114,16 @@ fun InfoSection(
 @Preview
 @Composable
 fun PreviewCurrentDayComponent() {
-    CurrentDayComponent(
-        temperature = "20",
-        pressure = "20",
-        windSpeed = "20",
-        humidity = "20",
-        description = "Description",
-        iconRes = R.drawable.ic_sunny
-    )
+  Column (
+      modifier = Modifier.padding(8.dp)
+  ){
+      CurrentDayComponent(
+          temperature = "20",
+          pressure = "20",
+          windSpeed = "20",
+          humidity = "20",
+          description = "Description",
+          iconRes = R.drawable.ic_sunny
+      )
+  }
 }

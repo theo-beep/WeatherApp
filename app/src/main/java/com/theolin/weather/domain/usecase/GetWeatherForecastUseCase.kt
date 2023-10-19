@@ -20,8 +20,7 @@ class GetWeatherForecastUseCase @Inject constructor(
     operator fun invoke(lat: Double, long: Double): Flow<DataResource<WeatherForecast>> = flow {
         try {
             emit(DataResource.Loading())
-            val weather =
-                repository.getWeatherForecast(latitude = lat, longitude = long).data?.toDomain()
+            val weather = repository.getWeatherForecast(latitude = lat, longitude = long).data?.toDomain()
             emit(
                 DataResource.Success(
                     WeatherForecast(
