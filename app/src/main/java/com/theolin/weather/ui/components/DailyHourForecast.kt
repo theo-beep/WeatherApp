@@ -30,6 +30,7 @@ fun DailyHourForecast(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
         ) {
+            Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = data.get(0).time?.dayOfWeek.toString(),
                 fontSize = 20.sp,

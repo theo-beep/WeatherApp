@@ -18,6 +18,7 @@ package com.theolin.weather.ui.home
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -35,6 +36,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.theolin.weather.ui.components.CurrentDayComponent
 import com.theolin.weather.ui.components.DailyHourForecast
+import com.theolin.weather.ui.theme.DefaultBrush
+import com.theolin.weather.ui.theme.gradientCloudy
+import com.theolin.weather.ui.theme.gradientRainy
+import com.theolin.weather.ui.theme.gradientSunny
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -43,7 +48,14 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     //TODO add placeholder image for icon
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                brush = state.weather?.currentWeatherData?.weatherType?.background ?: DefaultBrush
+            )
+
+    ) {
 
         if (state.isLoading) {
             CircularProgressIndicator(
