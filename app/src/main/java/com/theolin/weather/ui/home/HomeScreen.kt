@@ -16,6 +16,8 @@
 
 package com.theolin.weather.ui.home
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.theolin.weather.ui.theme.MyApplicationTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -37,10 +39,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltViewModel()) {
 
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
+    state.weather?.currentWeatherData?.weatherType?.let { Text(text = it.description) }
 }
 
 @Composable
@@ -52,7 +57,9 @@ internal fun HomeScreen(
     Column(modifier) {
         var nameHome by remember { mutableStateOf("Compose") }
         Row(
-            modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 24.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             TextField(

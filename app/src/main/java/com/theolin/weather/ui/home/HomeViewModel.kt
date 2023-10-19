@@ -16,30 +16,53 @@
 
 package com.theolin.weather.ui.home
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.theolin.weather.common.DataResource
+import com.theolin.weather.domain.models.WeatherForecast
+import com.theolin.weather.domain.usecase.GetWeatherForecastUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import com.theolin.weather.ui.home.HomeUiState.Error
-import com.theolin.weather.ui.home.HomeUiState.Loading
-import com.theolin.weather.ui.home.HomeUiState.Success
 import javax.inject.Inject
 
+@RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
 class HomeViewModel @Inject constructor(
+    private val weatherUseCase: GetWeatherForecastUseCase
 ) : ViewModel() {
 
 
+    private val _state: MutableStateFlow<WeatherState> = MutableStateFlow(WeatherState())
+    val state: StateFlow<WeatherState> = _state
+
+    init {
+        getWeatherForecast()
+    }
+
+    private fun getWeatherForecast() {
+        viewModelScope.launch {
+            weatherUseCase.invoke(lat = 52.52, long = 13.41).collect { result ->
+                _state.value =
+                    when (result) {
+                        is DataResource.Success -> WeatherState(
+                            weather = result.data,
+                            isLoading = true
+                        )
+                        is DataResource.Error -> WeatherState(error = result.message)
+                        is DataResource.Loading -> WeatherState(isLoading = true)
+                    }
+            }
+        }
+    }
 
 }
 
-sealed interface HomeUiState {
-    object Loading : HomeUiState
-    data class Error(val throwable: Throwable) : HomeUiState
-    data class Success(val data: List<String>) : HomeUiState
-}
+data class WeatherState(
+    val weather: WeatherForecast? = null,
+    val isLoading: Boolean = false,
+    val error: String? = null
+)

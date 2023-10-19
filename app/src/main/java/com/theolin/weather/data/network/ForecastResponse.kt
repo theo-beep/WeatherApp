@@ -1,47 +1,55 @@
 package com.theolin.weather.data.network
 
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
-/**
- * Generated serializable class for api calls
- *
- * **See Also:** [Json To Kotlin plugin on jetbrains marketplace ](https://plugins.jetbrains.com/plugin/9960-json-to-kotlin-class-jsontokotlinclass-)
- */
-@Serializable
+import com.google.gson.annotations.SerializedName
+
 data class ForecastResponse(
-    @SerialName("elevation")
+    @SerializedName("elevation")
     val elevation: Double?,
-    @SerialName("generationtime_ms")
+    @SerializedName("generationtime_ms")
     val generationtimeMs: Double?,
-    @SerialName("hourly")
+    @SerializedName("hourly")
     val hourly: Hourly?,
-    @SerialName("hourly_units")
+    @SerializedName("hourly_units")
     val hourlyUnits: HourlyUnits?,
-    @SerialName("latitude")
+    @SerializedName("latitude")
     val latitude: Double?,
-    @SerialName("longitude")
+    @SerializedName("longitude")
     val longitude: Double?,
-    @SerialName("timezone")
+    @SerializedName("timezone")
     val timezone: String?,
-    @SerialName("timezone_abbreviation")
+    @SerializedName("timezone_abbreviation")
     val timezoneAbbreviation: String?,
-    @SerialName("utc_offset_seconds")
+    @SerializedName("utc_offset_seconds")
     val utcOffsetSeconds: Int?
 ) {
-    @Serializable
     data class Hourly(
-        @SerialName("temperature_2m")
+        @SerializedName("pressure_msl")
+        val pressureMsl: List<Double?>?,
+        @SerializedName("relativehumidity_2m")
+        val relativehumidity2m: List<Int?>?,
+        @SerializedName("temperature_2m")
         val temperature2m: List<Double?>?,
-        @SerialName("time")
-        val time: List<String?>?
+        @SerializedName("time")
+        val time: List<String?>?,
+        @SerializedName("weathercode")
+        val weathercode: List<Int?>?,
+        @SerializedName("windspeed_10m")
+        val windspeed10m: List<Double?>?
     )
 
-    @Serializable
     data class HourlyUnits(
-        @SerialName("temperature_2m")
+        @SerializedName("pressure_msl")
+        val pressureMsl: String?,
+        @SerializedName("relativehumidity_2m")
+        val relativehumidity2m: String?,
+        @SerializedName("temperature_2m")
         val temperature2m: String?,
-        @SerialName("time")
-        val time: String?
+        @SerializedName("time")
+        val time: String?,
+        @SerializedName("weathercode")
+        val weathercode: String?,
+        @SerializedName("windspeed_10m")
+        val windspeed10m: String?
     )
 }

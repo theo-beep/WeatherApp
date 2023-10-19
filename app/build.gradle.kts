@@ -137,4 +137,7 @@ dependencies {
     implementation(libs.okhttp.logging)
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.kotlin.serialization)
+
+    //TODO : Move this into version catelogs
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 }
