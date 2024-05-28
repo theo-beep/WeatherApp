@@ -45,7 +45,11 @@ import com.theolin.weather.ui.theme.gradientSunny
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltViewModel()) {
 
-    val state by viewModel.state.collectAsStateWithLifecycle()
+    // val orderLines by viewModel.orderLines.collectAsStateWithLifecycle(
+    //        lifecycleOwner = androidx.compose.ui.platform.LocalLifecycleOwner.current
+    //    )
+    //TODO : currently there are dependancy issues with compose lifecycle issue tracker : https://issuetracker.google.com/issues/336842920
+    val state by viewModel.state.collectAsStateWithLifecycle( lifecycleOwner = androidx.compose.ui.platform.LocalLifecycleOwner.current)
 
     //TODO add placeholder image for icon
     Box(
